@@ -1,0 +1,13 @@
+
+* NixOS setup
+
+My goal is to reproduce my current fedora setup in NixOS without using home-manager or flakes.
+Then slowly integrate more advanced nix features.
+
+** Steps
+
+1. reproduce base OS using nix
+   - dot file managed using git/stow like I am doing it now
+   - UI customization using settings/gnome tweaks
+2. Use home-manager for setting dconf settings
+3. Use home-manager to replace dot management via git/stow?
