@@ -132,6 +132,9 @@
     nodePackages.pyright
     wl-clipboard
     ffmpeg
+    bitwarden
+    xournalpp
+    pika-backup
   ]) ++ (with pkgs.gnome; [
     gnome-terminal
     gnome-tweaks
