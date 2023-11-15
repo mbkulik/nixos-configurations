@@ -10,25 +10,22 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
+  boot.loader.systemd-boot.enable = true;
 
   zramSwap.enable = true;
-  
+
   boot.supportedFilesystems = [ "zfs" ];
   boot.zfs.forceImportRoot = false;
   boot.zfs.devNodes = "/dev/disk/by-partuuid";
   boot.zfs.extraPools = [ "data" ];
-  
 
   networking.hostId = "6c9dee36";
   networking.hostName = "odroid"; # Define your hostname.
-  
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-  
+
   users.users.mbkulik = {
      initialPassword = "aaa";
      isNormalUser = true;
@@ -52,4 +49,3 @@
   system.stateVersion = "23.05"; # Did you read the comment?
 
 }
-
