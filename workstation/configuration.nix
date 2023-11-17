@@ -20,7 +20,7 @@
 
   zramSwap.enable = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "precision";
   networking.networkmanager.enable = true;
 
   # Set your time zone.
