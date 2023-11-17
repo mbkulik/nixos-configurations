@@ -92,8 +92,8 @@
   };
 
   nixpkgs.overlays = [
-     (final: prev: {
-        jdt-language-server = prev.jdt-language-server.overrideAttrs(oldAttrs : {
+     (self: super: {
+        jdt-language-server = super.jdt-language-server.overrideAttrs(oldAttrs : {
           version = "1.29.0";
           timestamp = "202310261436";
           src = builtins.fetchurl {
