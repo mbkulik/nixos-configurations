@@ -141,10 +141,6 @@
   # Services
   services.openssh.enable = true;
   services.tailscale.enable = true;
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs29-pgtk;
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
