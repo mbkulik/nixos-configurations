@@ -46,6 +46,7 @@
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.core-utilities.enable = false;
 
    services.xserver = {
     layout = "us";
@@ -55,17 +56,6 @@
 
   environment.gnome.excludePackages =(with pkgs; [
     gnome-tour
-    gnome-console
-    gnome-photos
-  ]) ++ (with pkgs.gnome; [
-    gnome-weather
-    epiphany
-    gnome-contacts
-    gnome-maps
-    gnome-calendar
-    gnome-music
-    geary
-    seahorse
   ]);
 
   services.xserver.excludePackages = with pkgs; [
@@ -107,6 +97,10 @@
     (self: super: {jdk = super.jdk17.override { }; })
   ];
 
+  nixpkgs.config = {
+     allowUnfree = true;
+  };
+
   environment.systemPackages = (with pkgs; [
     pkgs.man-pages
     pkgs.man-pages-posix
@@ -121,10 +115,11 @@
     gcc
     clang-tools
     cppcheck
+    valgrind
     jdk17
     jdt-language-server
     gradle
-    python311
+    python3
     nodePackages.pyright
     wl-clipboard
     ffmpeg
@@ -134,13 +129,25 @@
   ]) ++ (with pkgs.gnome; [
     gnome-terminal
     gnome-tweaks
+    nautilus
+    gnome-calculator
+    gnome-system-monitor
+    gnome-screenshot
+    evince
+    eog
   ]);
 
   documentation.dev.enable = true;
 
   # Services
-  services.openssh.enable = true;
+  services.openssh = {
+      enable = true;
+      settings.PasswordAuthentication = true; #set to false public keys copied
+  };
   services.tailscale.enable = true;
+  services.avahi.enable = false;
+
+  programs.command-not-found.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
