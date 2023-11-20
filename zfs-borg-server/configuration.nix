@@ -25,7 +25,6 @@
   # Set your time zone.
   time.timeZone = "America/New_York";
 
-
   users.users.mbkulik = {
      initialPassword = "aaa";
      isNormalUser = true;
@@ -40,7 +39,9 @@
   services.openssh.enable = true;
   services.tailscale.enable = true;
 
-    # This value determines the NixOS release from which the default
+  programs.command-not-found.enable = false;
+
+  # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
