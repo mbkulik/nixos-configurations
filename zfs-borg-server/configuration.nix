@@ -22,6 +22,16 @@
   networking.hostId = "6c9dee36";
   networking.hostName = "odroid"; # Define your hostname.
 
+  networking.firewall = {
+    enable = true;
+
+    trustedInterfaces = [ "tailscale0" ];
+
+    allowedUDPPorts = [ config.services.tailscale.port ];
+
+    allowedTCPPorts = [ 22 ];
+  };
+
   # Set your time zone.
   time.timeZone = "America/New_York";
 
