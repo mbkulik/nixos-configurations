@@ -10,13 +10,7 @@
       ./hardware-configuration.nix
     ];
 
-
-  #
-  # This needs to be changed depending on the system
-  # This is being tests on a VM
-  #
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
+  boot.loader.systemd-boot.enable = true;
 
   zramSwap.enable = true;
 
@@ -49,8 +43,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
-
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -115,7 +107,7 @@
     pkgs.man-pages
     pkgs.man-pages-posix
     picocom
-    firefox
+    google-chrome
     mg
     git
     wl-clipboard
@@ -136,6 +128,7 @@
     bitwarden
     xournalpp
     pika-backup
+    loupe
   ]) ++ (with pkgs.gnome; [
     gnome-terminal
     gnome-tweaks
@@ -144,7 +137,6 @@
     gnome-system-monitor
     gnome-screenshot
     evince
-    eog
   ]);
 
   documentation.dev.enable = true;
@@ -158,6 +150,13 @@
   services.avahi.enable = false;
 
   programs.command-not-found.enable = false;
+
+  nix.optimise.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
