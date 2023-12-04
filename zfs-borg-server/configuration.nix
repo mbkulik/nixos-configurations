@@ -44,12 +44,21 @@
   environment.systemPackages = with pkgs; [
      borgbackup
      mg
+     tmux
+     git
   ];
 
   services.openssh.enable = true;
   services.tailscale.enable = true;
 
   programs.command-not-found.enable = false;
+
+  nix.optimise.automatic = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 10d";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
