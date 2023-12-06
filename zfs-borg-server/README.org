@@ -1,0 +1,49 @@
+
+* ZFS borg backup server
+
+1. Get Root
+
+   #+BEGIN_SRC
+   sudo -i
+   #+END_SRC
+
+2. Partition disks
+
+   #+BEGIN_SRC
+     parted /dev/XXX -- mklabel gpt
+     parted /dev/XXX -- mkpart ESP fat32 1MB 512MB
+     parted /dev/XXX -- set 1 esp on
+     parted /dev/XXX -- mkpart root ext4 512MB 100%
+   #+END_SRC
+
+3. Format disks
+
+   #+BEGIN_SRC
+   mkfs.ext4 -L nixos /dev/XXX2
+   mkfs.fat -F 32 -n boot /dev/XXX1
+   #+END_SRC
+
+4. Mount disks
+
+   #+BEGIN_SRC
+   mount /dev/disk/by-label/nixos /mnt
+   mkdir -p /mnt/boot
+   mount /dev/disk/by-label/boot /mnt/boot
+   zpool create data mirror /dev/YYY /dev/ZZZ
+   #+END_SRC
+
+5. Install
+
+   #+BEGIN_SRC
+   nixos-generate-config --root /mnt
+   curl -O -L https://raw.githubusercontent.com/mbkulik/nixos-configurations/main/zfs-borg-server/configuration.nix
+   mv configuration.nix /mnt/etc/nixos/
+   nixos-install --no-root-password
+   reboot
+   #+END_SRC
+
+6. Import ZFS
+
+   #+BEGIN_SRC
+   zpool import -f data
+   #+END_SRC
