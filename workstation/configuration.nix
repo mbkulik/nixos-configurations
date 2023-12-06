@@ -3,7 +3,13 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 { config, pkgs, ... }:
-
+let
+  tex = pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+      scheme-small wrapfig capt-of beamertheme-metropolis
+      lastpage turnthepage;
+  };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -11,6 +17,7 @@
     ];
 
   boot.loader.systemd-boot.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   zramSwap.enable = true;
 
@@ -99,15 +106,11 @@
     (self: super: {jdk = super.jdk17.override { }; })
   ];
 
-  nixpkgs.config = {
-     allowUnfree = true;
-  };
-
   environment.systemPackages = (with pkgs; [
     pkgs.man-pages
     pkgs.man-pages-posix
     picocom
-    google-chrome
+    firefox
     mg
     git
     wl-clipboard
@@ -129,6 +132,7 @@
     xournalpp
     pika-backup
     loupe
+    tex
   ]) ++ (with pkgs.gnome; [
     gnome-terminal
     gnome-tweaks
