@@ -53,7 +53,7 @@
      #+BEGIN_SRC
        { pkgs ? import <nixpkgs> {} }: with pkgs;
          mkShell {
-           buildInputs = [gcc cppcheck valgrind];
+           buildInputs = [gcc cppcheck valgrind clang-tools];
        }
      #+END_SRC
 
