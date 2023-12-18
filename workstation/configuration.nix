@@ -109,6 +109,7 @@ in
   environment.systemPackages = (with pkgs; [
     pkgs.man-pages
     pkgs.man-pages-posix
+    direnv
     picocom
     firefox
     mg
@@ -117,17 +118,12 @@ in
     tmux
     emacs29-pgtk
     stow
-    gcc
-    clang-tools
-    cppcheck
-    valgrind
-    jdk17
-    jdt-language-server
-    gradle
-    python3
-    nodePackages.pyright
-    wl-clipboard
-    ffmpeg
+    #jdk17
+    #jdt-language-server
+    #gradle
+    #python3
+    #nodePackages.pyright
+    #ffmpeg
     bitwarden
     xournalpp
     pika-backup
@@ -145,6 +141,8 @@ in
 
   documentation.dev.enable = true;
 
+  programs.bash.interactiveShellInit = ''eval "$(direnv hook bash)"'';
+
   # Services
   services.openssh = {
       enable = true;
@@ -152,6 +150,10 @@ in
   };
   services.tailscale.enable = true;
   services.avahi.enable = false;
+  services.emacs = {
+    package = pkgs.emacs29-pgtk;
+    enable = true;
+  };
 
   programs.command-not-found.enable = false;
 
