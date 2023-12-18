@@ -1,0 +1,64 @@
+
+* Workstation
+
+1) Get Root
+
+   #+BEGIN_SRC
+   sudo -i
+   #+END_SRC
+
+2) Partition Disks
+
+   #+BEGIN_SRC
+   parted /dev/XXX -- mklabel gpt
+   parted /dev/XXX -- mkpart ESP fat32 1MB 512MB
+   parted /dev/XXX -- set 1 esp on
+   parted /dev/XXX -- mkpart root xfs 512MB 100%
+   parted /dev/YYY -- mklabel gpt
+   parted /dev/YYY -- mkpart data xfs 0% 100%
+   #+END_SRC
+
+3) Format disks
+
+   #+BEGIN_SRC
+   mkfs.xfs -L nixos /dev/XXX2
+   mkfs.fat -F 32 -n boot /dev/XXX1
+   mkfs.xfs -L data /dev/YYY1
+   #+END_SRC
+
+4) Mount disks
+
+   #+BEGIN_SRC
+   mount /dev/disk/by-label/nixos /mnt
+   mkdir -p /mnt/boot
+   mount /dev/disk/by-label/boot /mnt/boot
+   mkdir -p /mnt/data
+   mount /dev/disk/by-label/data /mnt/data
+   #+END_SRC
+
+5) Install
+
+   #+BEGIN_SRC
+   nixos-generate-config --root /mnt
+   curl -L -L https://raw.githubusercontent.com/mbkulik/nixos-configurations/main/workstation/configuration.nix
+   mv configuration.nix /mnt/etc/nixos/
+   nixos-install --no-root-password
+   reboot
+   #+END_SRC
+
+6) Direnv Example
+
+   - ~shell.nix~ example C
+
+     #+BEGIN_SRC
+       { pkgs ? import <nixpkgs> {} }: with pkgs;
+         mkShell {
+           buildInputs = [gcc cppcheck valgrind];
+       }
+     #+END_SRC
+
+  - setup
+
+    #+BEGIN_SRC
+    direnv allow && echo "use nix" > .envrc
+    #+END_SRC
